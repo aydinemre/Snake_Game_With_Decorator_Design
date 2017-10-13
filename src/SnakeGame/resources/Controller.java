@@ -1,4 +1,4 @@
-package sample;
+package SnakeGame.resources;
 
 public class Controller {
 }
