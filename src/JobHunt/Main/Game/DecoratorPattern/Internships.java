@@ -1,4 +1,4 @@
-package SnakeGame.Main.DecoratorPattern;
+package JobHunt.Main.Game.DecoratorPattern;
 
 public class Internships extends SnakeDecorator{
 
