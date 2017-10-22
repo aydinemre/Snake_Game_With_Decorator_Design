@@ -11,6 +11,7 @@ public class DecoratorPatternTest {
 
         Snake snake = new Anaconda();
         System.out.println(snake);
+
         snake = new ForeignLanguage(snake);
         System.out.println(snake.getMultiplier());
         snake = new Internships(snake);

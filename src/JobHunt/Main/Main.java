@@ -1,5 +1,6 @@
 package JobHunt.Main;
 
+import JobHunt.Main.Game.Core.Game;
 import JobHunt.Main.Game.DecoratorPattern.Snake;
 import JobHunt.resources.SnakeForest;
 import JobHunt.resources.Screens.*;
@@ -25,16 +26,20 @@ public class Main extends Application{
         // Set screen title.
         primaryStage.setTitle("Job Hunter");
 
-        // Set not resizable :(
-        // TODO: Make responsive??!?!?!?!!?!?
+        // Set not resizable :( TODO:: Make responsive
         primaryStage.setResizable(false);
 
         // Create game window.
         GameWindow gameWindow = new GameWindow();
 
+        // Create game.
+        Game game = new Game(gameWindow,R.GAME_START_SPEED,snake);
+        game.start();
+
         // Start Game.
         primaryStage.setScene(gameWindow.getScene());
 
         primaryStage.show();
+
     }
 }

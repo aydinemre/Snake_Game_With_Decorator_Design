@@ -38,7 +38,9 @@ public class Point {
 
         return x == point.x && y == point.y;
     }
-
+    public Point translate(int dx, int dy) {
+        return new Point(x + dx, y + dy);
+    }
     public static Point getRandomPoint(int rowSize, int colonSize, List<Point>snakePoints) {
 
         Random random = new Random();
@@ -51,6 +53,11 @@ public class Point {
         return point;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

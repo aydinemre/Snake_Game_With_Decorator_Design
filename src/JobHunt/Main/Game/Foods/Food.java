@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 
 import java.util.Optional;
 
-public abstract class AbstractFood {
+public abstract class Food {
 
     private Color foodColor;
 
@@ -15,11 +15,11 @@ public abstract class AbstractFood {
     private Point point;
 
 
-    public AbstractFood(Point point) {
+    public Food(Point point) {
         this.point = point;
     }
 
-    public AbstractFood(Point point,Optional<Image> image, Optional<Color> foodColor) {
+    public Food(Point point, Optional<Image> image, Optional<Color> foodColor) {
 
         this.point      = point;
         this.foodImage  = image.orElse(null);

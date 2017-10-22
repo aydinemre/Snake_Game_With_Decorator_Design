@@ -6,7 +6,6 @@ public class TrainingCertificates extends SnakeDecorator{
         this.snake = snake;
     }
 
-    @Override
     public String getDesription() {
         return snake.getDescription() + " + Training Certificates ";
     }

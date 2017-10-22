@@ -3,16 +3,16 @@ package JobHunt.Main;
 public interface R {
 
     // Game Window Width.
-    int GAME_SCREEN_WIDTH = 500;
+    int GAME_SCREEN_WIDTH = 600;
 
     // Game Window height.
     int GAME_SCREEN_HEIGHT = 600;
 
-    // One row size.
-    int ONE_ROW_SIZE = 10;
+    // One cell size.
+    int CELL_SCALE = 10;
 
-    // One colon size.
-    int ONE_COL_SIZE = 10;
+    // Game start speed.
+    int GAME_START_SPEED = 50;
 
     // Snake typesSsSs !!!.
     enum SNAKE_TYPES{ Python, Anaconda }

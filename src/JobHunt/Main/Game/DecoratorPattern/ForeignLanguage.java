@@ -6,7 +6,7 @@ public class ForeignLanguage extends SnakeDecorator {
         this.snake = snake;
     }
 
-    @Override
+
     public String getDesription() {
         return snake.getDescription() + " + Foreign language learned";
     }

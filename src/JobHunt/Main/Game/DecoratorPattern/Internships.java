@@ -5,7 +5,6 @@ public class Internships extends SnakeDecorator{
     public Internships(Snake snake) {
         this.snake = snake;
     }
-    @Override
     public String getDesription() {
         return snake.getDescription() + " + Internship ";
     }
