@@ -1,5 +1,7 @@
 package JobHunt.Main;
 
+import java.security.cert.Certificate;
+
 public interface R {
 
     // Game Window Width.
@@ -16,4 +18,6 @@ public interface R {
 
     // Snake typesSsSs !!!.
     enum SNAKE_TYPES{ Python, Anaconda }
+
+    enum DECORATORS{ Internship, Training_Certificate, Foreign_Language}
 }

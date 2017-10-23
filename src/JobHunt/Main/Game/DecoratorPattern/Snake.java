@@ -7,6 +7,7 @@ import JobHunt.Main.Game.Foods.PowerUps.PowerUp;
 import JobHunt.Main.R;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Snake {
@@ -47,13 +48,15 @@ public abstract class Snake {
     }
 
     // List of snake points.
-    protected List<Point> points;
+    protected List<Point> points = new ArrayList<>();
+    ;
     public List<Point> getPoints() {
         return points;
     }
 
     // Head of snake.
     public Point getCurrentPosition() {
+        System.out.println("Point size : " + points.size());
         return points.get(points.size()-1);
     }
 

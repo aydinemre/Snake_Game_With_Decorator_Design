@@ -36,6 +36,7 @@ public class Main extends Application{
         Game game = new Game(gameWindow,R.GAME_START_SPEED,snake);
         game.start();
 
+
         // Start Game.
         primaryStage.setScene(gameWindow.getScene());
 

@@ -1,14 +1,18 @@
 package JobHunt.Main.Game.Core;
 
-import JobHunt.Main.Game.DecoratorPattern.Snake;
+import JobHunt.Main.Game.DecoratorPattern.*;
 import JobHunt.Main.Game.Foods.BasicFood;
 import JobHunt.Main.Game.Foods.Food;
 import JobHunt.Main.R;
 import JobHunt.resources.Painter;
 import JobHunt.resources.Screens.GameWindow;
+import JobHunt.resources.Screens.LevelUpScreen;
+import JobHunt.resources.Screens.WelcomeWindow;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.KeyCode;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Game extends AnimationTimer{
@@ -35,7 +39,7 @@ public class Game extends AnimationTimer{
     private int colNumber;
 
     // To pause game.
-    private boolean pause;
+    private AtomicBoolean pause;
 
     public Game(GameWindow gameWindow, long sleepMillisecond, Snake snake){
 
@@ -49,7 +53,7 @@ public class Game extends AnimationTimer{
             } else if (key.getCode() == KeyCode.DOWN) { snake.changeDirection(Directions.DOWN);
             } else if (key.getCode() == KeyCode.LEFT) { snake.changeDirection(Directions.LEFT);
             } else if (key.getCode() == KeyCode.RIGHT) { snake.changeDirection(Directions.RIGHT);
-            } else if (key.getCode() == KeyCode.ENTER){ pause = !pause; }
+            } else if (key.getCode() == KeyCode.ENTER){ pause.set(!pause.get()); }
         });
 
         // Game speed.
@@ -64,7 +68,7 @@ public class Game extends AnimationTimer{
         food = new BasicFood(Point.getRandomPoint(rowNumber,colNumber,snake.getPoints()));
 
         // Not pause
-        pause = false;
+        pause = new AtomicBoolean(false);
 
         // Create a thread to control totalTime bar.
         progressBarController = new ProgressBarController(gameWindow.getStamina(),15);
@@ -76,31 +80,40 @@ public class Game extends AnimationTimer{
     public void handle(long currentTime){
 
         // Check current timePeriod and
-        if ( (currentTime - framePrevTime) < sleepNanoSecond || pause ) return;
+        if ( (currentTime - framePrevTime) < sleepNanoSecond || pause.get() ) return;
 
         updateFrame();
         framePrevTime = currentTime;
         String status = "";
 
         // Check stamina.
-        status += progressBarController.isFinish;
+//        status += progressBarController.isFinish;
 
         if (!snake.getSnakeDirection().equals(Directions.START)) {
 
             // Update stamina.
             progressBarController.update();
-            status += " " + gameWindow.getStamina().getProgress();
+//            status += " " + gameWindow.getStamina().getProgress();
         }
 
         // Check is death.
-        status += " " + snake.isSafe();
+//        status += " " + snake.isSafe();
 
 
         // Check food counter.
         status += " " + foodCounter;
+        if (foodCounter == 5) {
 
+            Platform.runLater(() -> {
+                snake = LevelUpScreen.modifySnake(snake);
+                pause.set(false);
+            });
+            pause.set(true);
+            foodCounter = 0;
+
+        }
         // Point
-        status += " " + score;
+        status += " " + score + " " + snake.getMultiplier();
         gameWindow.getScoreTable().setText("Stat : " + status);
 
     }
