@@ -41,37 +41,43 @@ public class WelcomeWindow implements Initializable{
 
     // Tab pane holds tabs. And each tab includes information of a character
     @FXML private TabPane tabPane;
-    // Tab change listener.
+
+    // Tab change listener also holds last value as string.
     private MyChangeListener myChangeListener = new MyChangeListener(SNAKE_TYPES.Python.getSnakeName());
+
     // Custom alert used
     private Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-
+    // Initialize method inject @FXML objects.
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Get all snake types from R file.
+        // Create tab for each snake type.
         tabPane.getTabs().clear();
         for(SNAKE_TYPES snake_types: SNAKE_TYPES.values()){
             Tab temp = createTab(snake_types.name());
             tabPane.getTabs().add(temp);
         }
 
+        // Set change listener.
         tabPane.getSelectionModel().selectedItemProperty().addListener(myChangeListener);
 
     }
 
+    // Helper method to create tab.
     private Tab createTab(String name) {
 
-        // Create a tab to
+        // Create a tab.
         Tab newTab = new Tab(name);
 
+        // Anchor pane to hold image, texts ...
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setMinHeight(0.0);
         anchorPane.setMinWidth(0.0);
         anchorPane.setPrefHeight(180.0);
         anchorPane.setMinWidth(200.0);
 
+        // Create image view to show image.
         ImageView imageView = new ImageView();
         String imagePath = name + ".png";
         Image image = new Image(getClass().getResource(imagePath).toExternalForm());
@@ -83,6 +89,7 @@ public class WelcomeWindow implements Initializable{
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
 
+        // Snake name text.
         Text snakeNameText = new Text();
         snakeNameText.setText(name);
         snakeNameText.setLayoutX(160.0);
@@ -93,14 +100,16 @@ public class WelcomeWindow implements Initializable{
         snakeNameText.setWrappingWidth(280.458984375);
         snakeNameText.setFont(Font.font(26.0));
 
+        // Description.
         Text descriptionText = new Text();
         for(SNAKE_TYPES type:SNAKE_TYPES.values())
             if (type.getSnakeName().equals(name)) {
                 descriptionText.setText("x"+ type.getMultiplier() + " Multiplier\t" +
-                        type.getSquare() + " Square");
+                        "x" + type.getSquare() + " Square");
 
                 break;
         }
+
         descriptionText.setLayoutX(202.0);
         descriptionText.setLayoutY(252.0);
         descriptionText.setStrokeType(StrokeType.OUTSIDE);
@@ -108,18 +117,28 @@ public class WelcomeWindow implements Initializable{
         descriptionText.setWrappingWidth(176.7294921875);
         descriptionText.setTextAlignment(TextAlignment.CENTER);
 
+        // Add all components to anchor pane.
         anchorPane.getChildren().add(imageView);
         anchorPane.getChildren().add(snakeNameText);
         anchorPane.getChildren().add(descriptionText);
 
+        // Set anchor pane parent.
         newTab.setContent(anchorPane);
 
+        // Return new tab.
         return newTab;
     }
 
+    /**
+     *
+     * This method shows an alert and takes
+     * input from user and returns input
+     * snake name as string.
+     * @return Snake name.
+     */
     public String getSnakeType() {
 
-        // Create choice dialog box
+        // Load custom alert from fxml file.
         BorderPane root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("WelcomeWindow.fxml"));
@@ -127,34 +146,49 @@ public class WelcomeWindow implements Initializable{
             e.printStackTrace();
         }
 
+        // Get alert dialog pane to modify.
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.setHeader(root);
 
+        // Add icon to application.
         String iconPath =  ".." + File.separator +".." + File.separator + "Images" + File.separator + "GameIcon.jpg";
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResource(iconPath).toExternalForm()));
-        alert.getButtonTypes().clear();
-        alert.getButtonTypes().add(new ButtonType("Start Your Career!"));
-        alert.showAndWait();
 
-        System.out.println(myChangeListener.getLastValue());
+        // Clear alert buttons.
+        alert.getButtonTypes().clear();
+
+        // Add my button.
+        alert.getButtonTypes().add(new ButtonType("Start Your Career!"));
+
+        // Show alert and wait input from user.
+        alert.showAndWait();
 
         return myChangeListener.getLastValue();
 
     }
 
+    /**
+     * This class created to listen tab changes.
+     * When i use anonymous changelistener i can't change private fiels value.
+     * So i holds last value in this class.
+     */
     private class MyChangeListener implements ChangeListener<Tab>{
 
+        // Last value.
         private String lastValue;
 
+        // Constructor takes initial value.
         public MyChangeListener(String lastValue) {
             this.lastValue = lastValue;
         }
 
+        // On changed update last value.
         @Override
         public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
             lastValue = newValue.getText();
         }
 
+        // Getter for last value.
         public String getLastValue() {
             return lastValue;
         }
