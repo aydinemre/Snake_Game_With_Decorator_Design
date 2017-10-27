@@ -1,8 +1,7 @@
 package JobHunt.resources.Screens.WelcomeScreen;
 
 import JobHunt.Main.Game.Core.SNAKE_TYPES;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import JobHunt.Main.MyChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,15 +42,16 @@ public class WelcomeWindow implements Initializable{
     @FXML private TabPane tabPane;
 
     // Tab change listener also holds last value as string.
-    private MyChangeListener myChangeListener = new MyChangeListener(SNAKE_TYPES.Python.getSnakeName());
+    private MyChangeListener myChangeListener = MyChangeListener.getInstance();
+
 
     // Custom alert used
     private Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
+
     // Initialize method inject @FXML objects.
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         // Create tab for each snake type.
         tabPane.getTabs().clear();
         for(SNAKE_TYPES snake_types: SNAKE_TYPES.values()){
@@ -61,7 +61,6 @@ public class WelcomeWindow implements Initializable{
 
         // Set change listener.
         tabPane.getSelectionModel().selectedItemProperty().addListener(myChangeListener);
-
     }
 
     // Helper method to create tab.
@@ -136,7 +135,7 @@ public class WelcomeWindow implements Initializable{
      * snake name as string.
      * @return Snake name.
      */
-    public String getSnakeType() {
+    public void getSnakeType() {
 
         // Load custom alert from fxml file.
         BorderPane root = null;
@@ -149,7 +148,6 @@ public class WelcomeWindow implements Initializable{
         // Get alert dialog pane to modify.
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.setHeader(root);
-
         // Add icon to application.
         String iconPath =  ".." + File.separator +".." + File.separator + "Images" + File.separator + "GameIcon.jpg";
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResource(iconPath).toExternalForm()));
@@ -163,34 +161,7 @@ public class WelcomeWindow implements Initializable{
         // Show alert and wait input from user.
         alert.showAndWait();
 
-        return myChangeListener.getLastValue();
-
     }
 
-    /**
-     * This class created to listen tab changes.
-     * When i use anonymous changelistener i can't change private fiels value.
-     * So i holds last value in this class.
-     */
-    private class MyChangeListener implements ChangeListener<Tab>{
 
-        // Last value.
-        private String lastValue;
-
-        // Constructor takes initial value.
-        public MyChangeListener(String lastValue) {
-            this.lastValue = lastValue;
-        }
-
-        // On changed update last value.
-        @Override
-        public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
-            lastValue = newValue.getText();
-        }
-
-        // Getter for last value.
-        public String getLastValue() {
-            return lastValue;
-        }
-    }
 }

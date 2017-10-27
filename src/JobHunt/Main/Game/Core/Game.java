@@ -60,9 +60,21 @@ public class Game extends AnimationTimer{
     // To pause game.
     private AtomicBoolean pause;
 
+    // Game level
+    int gameLevel = 0;
+
+    /**
+     * Game constructor.
+     *
+     * Takes a game window, a second for snake speed and snake as parameter.
+     * And assign keyboard controller for game.
+     * @param gameWindow game window
+     * @param sleepMillisecond snake speed.
+     * @param snake snake.
+     */
     public Game(GameWindow gameWindow, long sleepMillisecond, Snake snake){
 
-        // Take
+        // Take game window.
         this.gameWindow = gameWindow;
 
         // Add keyboard controller.
@@ -92,9 +104,8 @@ public class Game extends AnimationTimer{
 
         // Create a control for stamina bar.
         progressBarController = new ProgressBarController(gameWindow.getStamina(),15);
-//        companiesController   = new CompanyFoodController(rowNumber,colNumber);
-//        powerUpController     = new PowerUpController();
 
+        // Company foods random timers. // TODO : Code reeeuse :/
         companyFoodRandomTimer = new RandomTimer(5,8,13,16);
         companyFoodRandomTimer.isAvailable.set(true);
 
@@ -111,6 +122,7 @@ public class Game extends AnimationTimer{
         });
         companyFoodTimeLine.play();
 
+        // TODO :: Code reuse
         powerUpRandomTimer = new RandomTimer(3,5,15,20);
         powerUpRandomTimer.isAvailable.set(true);
 
@@ -128,13 +140,13 @@ public class Game extends AnimationTimer{
         powerUpTimeLine.play();
     }
 
-    // This function will call in each frame.
+    // This function calls in each frame.
     @Override
     public void handle(long currentTime){
 
         // Check current timePeriod and
         if ( (currentTime - framePrevTime) < sleepNanoSecond || pause.get() ) return;
-//        fiveSecondsWonder.setDelay(Duration.seconds(2));
+
         updateFrame();
         framePrevTime = currentTime;
         String status = "";

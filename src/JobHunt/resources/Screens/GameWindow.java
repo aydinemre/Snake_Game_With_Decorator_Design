@@ -11,7 +11,6 @@ import javafx.scene.layout.VBox;
 
 public class GameWindow {
 
-
     private VBox root;
     private HBox stats;
     private Canvas canvas;

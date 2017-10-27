@@ -14,7 +14,7 @@ public class Anaconda extends Snake {
     public Anaconda() {
 
         // Assign color.
-        color = Color.RED;
+        color = Color.BROWN;
 
         // Assign description.
         description = "Snake Genera : Anaconda";

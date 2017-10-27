@@ -1,5 +1,6 @@
 package JobHunt.Main;
 
+import java.io.File;
 import java.security.cert.Certificate;
 
 public interface R {
@@ -14,7 +15,9 @@ public interface R {
     int CELL_SCALE = 10;
 
     // Game start speed.
-    int GAME_START_SPEED = 50;
+    int GAME_START_SPEED = 100;
+
+    String iconPath = ".." + File.separator + "resources" + File.separator + "Images" + File.separator + "GameIcon.jpg";
 
     enum DECORATORS{ Internship, Training_Certificate, Foreign_Language}
 }

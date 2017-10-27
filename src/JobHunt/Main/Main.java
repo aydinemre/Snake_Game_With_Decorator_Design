@@ -7,6 +7,10 @@ import JobHunt.resources.Screens.WelcomeScreen.WelcomeWindow;
 
 import JobHunt.resources.SnakeForest;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -19,10 +23,9 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        WelcomeWindow welcomeWindow = new WelcomeWindow();
-
-        // Get snake type from user.
-        String snakeType = welcomeWindow.getSnakeType();
+        // Create welcome screen and get snake type.
+        new WelcomeWindow().getSnakeType();
+        String snakeType = MyChangeListener.getValue();
 
         // Oh! Catch a snake from snake forest
         Snake snake = SnakeForest.catchSnake(snakeType);
@@ -32,6 +35,9 @@ public class Main extends Application{
 
         // Set not resizable :( TODO:: Make responsive ne gerek var
         primaryStage.setResizable(false);
+
+        // Add icon to program.
+        primaryStage.getIcons().add(new Image(getClass().getResource(R.iconPath).toExternalForm()));
 
         // Create game window.
         GameWindow gameWindow = new GameWindow();
