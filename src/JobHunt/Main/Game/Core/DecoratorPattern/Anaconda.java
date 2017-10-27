@@ -1,7 +1,9 @@
-package JobHunt.Main.Game.DecoratorPattern;
+package JobHunt.Main.Game.Core.DecoratorPattern;
 
+import JobHunt.Main.Game.Core.Foods.Companies.CompanyFood;
 import JobHunt.Main.Game.Core.Point;
 import JobHunt.Main.R;
+import JobHunt.resources.Companies;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class Anaconda extends Snake {
 
         points.add(new Point(R.GAME_SCREEN_WIDTH / R.CELL_SCALE/ 2,
                 R.GAME_SCREEN_HEIGHT / R.CELL_SCALE / 2));
+
+        cv = new ArrayList<>();
     }
 
     @Override
@@ -33,6 +37,5 @@ public class Anaconda extends Snake {
     public List<Point> getPoints() {
         return points;
     }
-
 
 }

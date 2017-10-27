@@ -1,12 +1,14 @@
 package JobHunt.Main;
 
+import JobHunt.Main.Game.Core.DecoratorPattern.Snake;
 import JobHunt.Main.Game.Core.Game;
-import JobHunt.Main.Game.DecoratorPattern.Snake;
-import JobHunt.resources.SnakeForest;
-import JobHunt.resources.Screens.*;
+import JobHunt.resources.Screens.GameWindow;
+import JobHunt.resources.Screens.WelcomeScreen.WelcomeWindow;
 
+import JobHunt.resources.SnakeForest;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 
 public class Main extends Application{
 
@@ -17,8 +19,10 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        WelcomeWindow welcomeWindow = new WelcomeWindow();
+
         // Get snake type from user.
-        String snakeType = WelcomeWindow.getSnakeType();
+        String snakeType = welcomeWindow.getSnakeType();
 
         // Oh! Catch a snake from snake forest
         Snake snake = SnakeForest.catchSnake(snakeType);
@@ -26,7 +30,7 @@ public class Main extends Application{
         // Set screen title.
         primaryStage.setTitle("Job Hunter");
 
-        // Set not resizable :( TODO:: Make responsive
+        // Set not resizable :( TODO:: Make responsive ne gerek var
         primaryStage.setResizable(false);
 
         // Create game window.

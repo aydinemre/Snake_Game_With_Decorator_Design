@@ -1,9 +1,9 @@
 package JobHunt.test;
 
-import JobHunt.Main.Game.DecoratorPattern.Anaconda;
-import JobHunt.Main.Game.DecoratorPattern.ForeignLanguage;
-import JobHunt.Main.Game.DecoratorPattern.Internships;
-import JobHunt.Main.Game.DecoratorPattern.Snake;
+import JobHunt.Main.Game.Core.DecoratorPattern.Anaconda;
+import JobHunt.Main.Game.Core.DecoratorPattern.ForeignLanguage;
+import JobHunt.Main.Game.Core.DecoratorPattern.Internships;
+import JobHunt.Main.Game.Core.DecoratorPattern.Snake;
 
 public class DecoratorPatternTest {
     public static void main(String[] args) {

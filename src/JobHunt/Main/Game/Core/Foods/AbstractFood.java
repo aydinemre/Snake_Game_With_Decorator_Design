@@ -1,30 +1,18 @@
-package JobHunt.Main.Game.Foods;
+package JobHunt.Main.Game.Core.Foods;
 
 import JobHunt.Main.Game.Core.Point;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-import java.util.Optional;
+public abstract class AbstractFood {
 
-public abstract class Food {
-
-    private Color foodColor;
-
+    private Color foodColor = Color.ROSYBROWN;
     private Image foodImage;
-
     private Point point;
 
 
-    public Food(Point point) {
+    public AbstractFood(Point point) {
         this.point = point;
-    }
-
-    public Food(Point point, Optional<Image> image, Optional<Color> foodColor) {
-
-        this.point      = point;
-        this.foodImage  = image.orElse(null);
-        this.foodColor  = foodColor.orElse(null);
-
     }
 
     public Color getFoodColor() {

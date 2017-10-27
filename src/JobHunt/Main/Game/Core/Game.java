@@ -1,17 +1,27 @@
 package JobHunt.Main.Game.Core;
 
-import JobHunt.Main.Game.DecoratorPattern.*;
-import JobHunt.Main.Game.Foods.BasicFood;
-import JobHunt.Main.Game.Foods.Food;
+import JobHunt.Main.Game.Core.DecoratorPattern.*;
+import JobHunt.Main.Game.Core.Foods.AbstractFood;
+import JobHunt.Main.Game.Core.Foods.Companies.CompanyFood;
+import JobHunt.Main.Game.Core.Foods.Food;
+import JobHunt.Main.Game.Core.Foods.PowerUps.GreenPowerUp;
+import JobHunt.Main.Game.Core.Foods.PowerUps.PowerUp;
 import JobHunt.Main.R;
+import JobHunt.resources.Companies;
 import JobHunt.resources.Painter;
 import JobHunt.resources.Screens.GameWindow;
 import JobHunt.resources.Screens.LevelUpScreen;
-import JobHunt.resources.Screens.WelcomeWindow;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -26,7 +36,16 @@ public class Game extends AnimationTimer{
 
     // Game core parts : Snake , Food and Progress Bar Controller.
     private Snake snake;
+
+    // Define all food types.
     private Food food;
+
+    private CompanyFood companyFood;
+    private RandomTimer companyFoodRandomTimer;
+
+    private PowerUp powerUp;
+    private RandomTimer powerUpRandomTimer;
+
     private ProgressBarController progressBarController;
 
 
@@ -43,11 +62,11 @@ public class Game extends AnimationTimer{
 
     public Game(GameWindow gameWindow, long sleepMillisecond, Snake snake){
 
+        // Take
         this.gameWindow = gameWindow;
 
-        this.gameWindow.getCanvas().setFocusTraversable(true);
-
         // Add keyboard controller.
+        this.gameWindow.getCanvas().setFocusTraversable(true);
         this.gameWindow.getCanvas().addEventHandler(javafx.scene.input.KeyEvent.KEY_PRESSED, key -> {
             if(key.getCode() == KeyCode.UP) { snake.changeDirection(Directions.UP);
             } else if (key.getCode() == KeyCode.DOWN) { snake.changeDirection(Directions.DOWN);
@@ -59,20 +78,54 @@ public class Game extends AnimationTimer{
         // Game speed.
         this.sleepNanoSecond = sleepMillisecond * 1000000;
         this.snake = snake;
+        this.snake.setPowerUp(null);
 
         // Calculate row number and col number.
         rowNumber = R.GAME_SCREEN_HEIGHT / R.CELL_SCALE;
         colNumber = R.GAME_SCREEN_WIDTH  / R.CELL_SCALE;
 
         // Create first random food.
-        food = new BasicFood(Point.getRandomPoint(rowNumber,colNumber,snake.getPoints()));
+        food = new Food(Point.getRandomPoint(rowNumber,colNumber,snake.getPoints()));
 
         // Not pause
         pause = new AtomicBoolean(false);
 
-        // Create a thread to control totalTime bar.
+        // Create a control for stamina bar.
         progressBarController = new ProgressBarController(gameWindow.getStamina(),15);
+//        companiesController   = new CompanyFoodController(rowNumber,colNumber);
+//        powerUpController     = new PowerUpController();
 
+        companyFoodRandomTimer = new RandomTimer(5,8,13,16);
+        companyFoodRandomTimer.isAvailable.set(true);
+
+        // Start companyFoodTimeLine
+        Timeline companyFoodTimeLine = new Timeline(new KeyFrame(Duration.seconds(1), event -> {}));
+        // In each 1 cyle set on finished method will run.
+        companyFoodTimeLine.setCycleCount(1);
+        // companyFoodTimeLine set on finished method.
+        companyFoodTimeLine.setOnFinished(event -> {
+            companyFoodRandomTimer.switchIsAvailable();
+            companyFood = new CompanyFood(Point.getRandomPoint(rowNumber,colNumber,snake.getPoints()), Companies.GOOGLE.getColor());
+            companyFoodTimeLine.getKeyFrames().set(0,new KeyFrame(Duration.seconds(companyFoodRandomTimer.getRandomTime()), event1 -> System.out.println("deva")));
+            companyFoodTimeLine.play();
+        });
+        companyFoodTimeLine.play();
+
+        powerUpRandomTimer = new RandomTimer(3,5,15,20);
+        powerUpRandomTimer.isAvailable.set(true);
+
+        // Start powerUpTimeLine
+        Timeline powerUpTimeLine = new Timeline(new KeyFrame(Duration.seconds(1), event -> {}));
+        // In each 1 cyle set on finished method will run.
+        powerUpTimeLine.setCycleCount(1);
+        // powerUpTimeLine set on finished method.
+        powerUpTimeLine.setOnFinished(event -> {
+            powerUpRandomTimer.switchIsAvailable();
+            powerUp = new GreenPowerUp(Point.getRandomPoint(rowNumber,colNumber,snake.getPoints()));
+            powerUpTimeLine.getKeyFrames().set(0,new KeyFrame(Duration.seconds(powerUpRandomTimer.getRandomTime()), event1 -> System.out.println("hello")));
+            powerUpTimeLine.play();
+        });
+        powerUpTimeLine.play();
     }
 
     // This function will call in each frame.
@@ -81,23 +134,23 @@ public class Game extends AnimationTimer{
 
         // Check current timePeriod and
         if ( (currentTime - framePrevTime) < sleepNanoSecond || pause.get() ) return;
-
+//        fiveSecondsWonder.setDelay(Duration.seconds(2));
         updateFrame();
         framePrevTime = currentTime;
         String status = "";
 
         // Check stamina.
-//        status += progressBarController.isFinish;
+///        progressBarController.isFinish;
+        // Check is death.
+//         snake.isSafe();
 
         if (!snake.getSnakeDirection().equals(Directions.START)) {
 
             // Update stamina.
             progressBarController.update();
-//            status += " " + gameWindow.getStamina().getProgress();
         }
 
-        // Check is death.
-//        status += " " + snake.isSafe();
+
 
 
         // Check food counter.
@@ -125,15 +178,25 @@ public class Game extends AnimationTimer{
 
         // Check is snake eat food ?
         if (isSnakeEatFood(food)) {
+
             ++foodCounter;
             score += snake.getMultiplier();
             snake.extend(rowNumber,colNumber);
-            food = new BasicFood(Point.getRandomPoint(rowNumber, colNumber, snake.getPoints()));
-        }
-        else
-            snake.move(rowNumber,colNumber);
+            food = new Food(Point.getRandomPoint(rowNumber, colNumber, snake.getPoints()));
 
-        Painter.paint(gameWindow.getCanvas().getGraphicsContext2D(),snake,food.getPoint());
+        }else {
+            snake.move(rowNumber,colNumber);
+        }
+
+
+        List<AbstractFood>foods = new ArrayList<>();
+        foods.add(food);
+        if (companyFoodRandomTimer.getIsAvailable())
+            foods.add(companyFood);
+        if (powerUpRandomTimer.getIsAvailable())
+            foods.add(powerUp);
+
+        Painter.paint(gameWindow.getCanvas().getGraphicsContext2D(),snake,foods);
 
         // Check is snake dead ?
 
@@ -141,7 +204,7 @@ public class Game extends AnimationTimer{
     }
 
 
-    private boolean isSnakeEatFood(Food food) {
+    private boolean isSnakeEatFood(AbstractFood food) {
         return food.getPoint().equals(snake.getCurrentPosition());
     }
 
@@ -158,7 +221,7 @@ public class Game extends AnimationTimer{
         double totalTime;
         boolean isFinish = false;
 
-        public ProgressBarController(ProgressBar progressBar, double totalTime) {
+        ProgressBarController(ProgressBar progressBar, double totalTime) {
 
             this.progressBar = progressBar;
 
@@ -168,7 +231,7 @@ public class Game extends AnimationTimer{
 
         }
 
-        public void update() {
+        void update() {
             if (!isFinish){
                 progressBar.setProgress(currentTime / totalTime);
                 currentTime -= timePeriod;
@@ -183,6 +246,93 @@ public class Game extends AnimationTimer{
 
         public void reset(){
             currentTime = totalTime;
+        }
+    }
+
+    private class CompanyFoodController {
+
+        private CompanyFood companyFood;
+        private AtomicBoolean isCompanyFoodAvailable;
+
+        public void setIsCompanyFoodAvailable(Boolean isCompanyFoodAvailable) {
+            this.isCompanyFoodAvailable.set(isCompanyFoodAvailable);
+        }
+
+        public Boolean getIsCompanyFoodAvailable() {
+            return isCompanyFoodAvailable.get();
+        }
+    }
+
+    private class RandomTimer {
+
+        private int stayingTimeLowerBound;
+        private int stayingTimeUpperBound;
+        private int stayingTime;
+
+        private int creatingTimeLowerBound;
+        private int creatingTimeUpperBound;
+        private int creatingTime;
+
+        private Random random;
+
+        private AtomicBoolean isAvailable;
+
+        private boolean orderFlag = true; // false ise staying time true ise creating time.
+
+        public RandomTimer(int stayingTimeLowerBound, int stayingTimeUpperBound,
+                           int creatingTimeLowerBound, int creatingTimeUpperBound) {
+
+            this.stayingTimeLowerBound = stayingTimeLowerBound;
+            this.stayingTimeUpperBound = stayingTimeUpperBound;
+            this.creatingTimeLowerBound = creatingTimeLowerBound;
+            this.creatingTimeUpperBound = creatingTimeUpperBound;
+            isAvailable = new AtomicBoolean();
+            isAvailable.set(false);
+            random = new Random();
+            stayingTime     = random.nextInt(stayingTimeUpperBound-stayingTimeLowerBound) + stayingTimeLowerBound;
+            creatingTime    = random.nextInt(creatingTimeUpperBound-creatingTimeLowerBound) + creatingTimeLowerBound;
+        }
+
+        public int getRandomTime() {
+
+            int temp;
+
+            if (orderFlag) {
+                temp = creatingTime;
+                System.out.println(creatingTimeUpperBound + " " + creatingTimeLowerBound);
+                creatingTime    = random.nextInt(creatingTimeUpperBound-creatingTimeLowerBound) + creatingTimeLowerBound;
+
+            }else {
+                temp = stayingTime;
+                stayingTime = random.nextInt(stayingTimeUpperBound - stayingTimeLowerBound) + stayingTimeLowerBound;
+            }
+            orderFlag = !orderFlag;
+
+            return temp;
+        }
+
+        public void setStayingTimeLowerBound(int stayingTimeLowerBound) {
+            this.stayingTimeLowerBound = stayingTimeLowerBound;
+        }
+
+        public void setStayingTimeUpperBound(int stayingTimeUpperBound) {
+            this.stayingTimeUpperBound = stayingTimeUpperBound;
+        }
+
+        public void setCreatingTimeLowerBound(int creatingTimeLowerBound) {
+            this.creatingTimeLowerBound = creatingTimeLowerBound;
+        }
+
+        public void setCreatingTimeUpperBound(int creatingTimeUpperBound) {
+            this.creatingTimeUpperBound = creatingTimeUpperBound;
+        }
+
+        public void switchIsAvailable() {
+            this.isAvailable.set(!isAvailable.get());
+        }
+
+        public Boolean getIsAvailable() {
+            return isAvailable.get();
         }
     }
 }

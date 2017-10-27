@@ -1,6 +1,6 @@
 package JobHunt.resources.Screens;
 
-import JobHunt.Main.Game.DecoratorPattern.*;
+import JobHunt.Main.Game.Core.DecoratorPattern.*;
 import JobHunt.Main.R;
 import javafx.scene.control.ChoiceDialog;
 

@@ -16,8 +16,5 @@ public interface R {
     // Game start speed.
     int GAME_START_SPEED = 50;
 
-    // Snake typesSsSs !!!.
-    enum SNAKE_TYPES{ Python, Anaconda }
-
     enum DECORATORS{ Internship, Training_Certificate, Foreign_Language}
 }

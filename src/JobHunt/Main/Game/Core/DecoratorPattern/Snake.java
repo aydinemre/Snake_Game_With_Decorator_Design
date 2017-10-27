@@ -1,10 +1,10 @@
-package JobHunt.Main.Game.DecoratorPattern;
+package JobHunt.Main.Game.Core.DecoratorPattern;
 
 
 import JobHunt.Main.Game.Core.Directions;
+import JobHunt.Main.Game.Core.Foods.Companies.CompanyFood;
 import JobHunt.Main.Game.Core.Point;
-import JobHunt.Main.Game.Foods.PowerUps.PowerUp;
-import JobHunt.Main.R;
+import JobHunt.Main.Game.Core.Foods.PowerUps.PowerUp;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public abstract class Snake {
     private Directions snakeDirection = Directions.START;
     protected int snakeSquare;
     private boolean safe = true;
-
+    protected List<CompanyFood> cv;
 
     // Getter for description.
     public String getDescription() { return description; }
@@ -56,7 +56,6 @@ public abstract class Snake {
 
     // Head of snake.
     public Point getCurrentPosition() {
-        System.out.println("Point size : " + points.size());
         return points.get(points.size()-1);
     }
 
@@ -131,6 +130,12 @@ public abstract class Snake {
         if (x < 0) x = rowNumber - 1;
         if (y < 0) y = colNumber - 1;
         return new Point(x, y);
+    }
+
+    public List<CompanyFood> getCV(){ return cv; }
+
+    public void addCompanyToCV(CompanyFood companyFood){
+        cv.add(companyFood);
     }
 
     @Override

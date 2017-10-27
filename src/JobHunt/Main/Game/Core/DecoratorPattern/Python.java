@@ -1,5 +1,6 @@
-package JobHunt.Main.Game.DecoratorPattern;
+package JobHunt.Main.Game.Core.DecoratorPattern;
 
+import JobHunt.Main.Game.Core.Foods.Companies.CompanyFood;
 import JobHunt.Main.Game.Core.Point;
 import JobHunt.Main.R;
 import javafx.scene.paint.Color;
@@ -22,6 +23,7 @@ public class Python extends Snake{
 
         snakeSquare = 1;
 
+        cv = new ArrayList<>();
     }
 
     @Override
@@ -33,4 +35,6 @@ public class Python extends Snake{
     public List<Point> getPoints() {
         return points;
     }
+
+    public List<CompanyFood> getCV(){ return cv; }
 }

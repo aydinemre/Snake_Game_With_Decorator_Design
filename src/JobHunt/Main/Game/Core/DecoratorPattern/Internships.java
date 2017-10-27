@@ -1,6 +1,4 @@
-package JobHunt.Main.Game.DecoratorPattern;
-
-import JobHunt.Main.Game.Core.Point;
+package JobHunt.Main.Game.Core.DecoratorPattern;
 
 public class Internships extends SnakeDecorator{
 

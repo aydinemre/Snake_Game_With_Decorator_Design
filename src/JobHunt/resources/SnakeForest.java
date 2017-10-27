@@ -1,17 +1,19 @@
 package JobHunt.resources;
 
-import JobHunt.Main.Game.DecoratorPattern.Anaconda;
-import JobHunt.Main.Game.DecoratorPattern.Python;
-import JobHunt.Main.Game.DecoratorPattern.Snake;
+import JobHunt.Main.Game.Core.DecoratorPattern.Anaconda;
+import JobHunt.Main.Game.Core.DecoratorPattern.Python;
+import JobHunt.Main.Game.Core.DecoratorPattern.Snake;
+import JobHunt.Main.Game.Core.SNAKE_TYPES;
 import JobHunt.Main.R;
 
 public class SnakeForest {
 
     public static Snake catchSnake(String snakeType) {
 
-        if (R.SNAKE_TYPES.valueOf(snakeType) == R.SNAKE_TYPES.Anaconda)
+        System.out.println(snakeType);
+        if (SNAKE_TYPES.valueOf(snakeType) == SNAKE_TYPES.Anaconda)
             return new Anaconda();
-        else if (R.SNAKE_TYPES.valueOf(snakeType) == R.SNAKE_TYPES.Python)
+        else if (SNAKE_TYPES.valueOf(snakeType) == SNAKE_TYPES.Python)
             return new Python();
 
         return null;

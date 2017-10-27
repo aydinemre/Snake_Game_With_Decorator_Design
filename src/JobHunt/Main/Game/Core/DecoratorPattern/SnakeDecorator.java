@@ -1,8 +1,9 @@
-package JobHunt.Main.Game.DecoratorPattern;
+package JobHunt.Main.Game.Core.DecoratorPattern;
 
 import JobHunt.Main.Game.Core.Directions;
+import JobHunt.Main.Game.Core.Foods.Companies.CompanyFood;
 import JobHunt.Main.Game.Core.Point;
-import JobHunt.Main.Game.Foods.PowerUps.PowerUp;
+import JobHunt.Main.Game.Core.Foods.PowerUps.PowerUp;
 import javafx.scene.paint.Color;
 
 import java.util.List;
@@ -79,6 +80,16 @@ public abstract class SnakeDecorator extends Snake {
     @Override
     public void extend(int rowNumber, int colNumber) {
         snake.extend(rowNumber, colNumber);
+    }
+
+    @Override
+    public List<CompanyFood> getCV() {
+        return snake.getCV();
+    }
+
+    @Override
+    public void addCompanyToCV(CompanyFood companyFood) {
+        snake.addCompanyToCV(companyFood);
     }
 
     @Override

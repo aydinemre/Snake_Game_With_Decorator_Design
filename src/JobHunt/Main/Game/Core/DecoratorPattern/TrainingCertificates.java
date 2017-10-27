@@ -1,4 +1,4 @@
-package JobHunt.Main.Game.DecoratorPattern;
+package JobHunt.Main.Game.Core.DecoratorPattern;
 
 public class TrainingCertificates extends SnakeDecorator{
 
