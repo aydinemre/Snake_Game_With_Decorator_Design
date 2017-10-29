@@ -10,10 +10,10 @@ public class SnakeForest {
 
     public static Snake catchSnake(String snakeType) {
 
-        System.out.println(snakeType);
-        if (SNAKE_TYPES.valueOf(snakeType) == SNAKE_TYPES.Anaconda)
+        System.out.println();
+        if (snakeType.contains(SNAKE_TYPES.Anaconda.getSnakeName()))
             return new Anaconda();
-        else if (SNAKE_TYPES.valueOf(snakeType) == SNAKE_TYPES.Python)
+        else if (snakeType.contains(SNAKE_TYPES.Python.getSnakeName()))
             return new Python();
 
         return null;

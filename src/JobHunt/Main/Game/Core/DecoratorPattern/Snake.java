@@ -113,6 +113,7 @@ public abstract class Snake {
 
     public void extend(int rowNumber, int colNumber) {
 
+        System.out.println("Snake direction : " + snakeDirection);
         if (!(snakeDirection.equals(Directions.START))){
             Point translatedPoint = getCurrentPosition().translate(snakeDirection.getxVelocity(),snakeDirection.getyVelocity());
             translatedPoint = checkNewPosition(rowNumber,colNumber,translatedPoint);

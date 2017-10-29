@@ -12,7 +12,7 @@ public interface R {
     int GAME_SCREEN_HEIGHT = 600;
 
     // One cell size.
-    int CELL_SCALE = 10;
+    int CELL_SCALE = 15;
 
     // Game start speed.
     int GAME_START_SPEED = 100;

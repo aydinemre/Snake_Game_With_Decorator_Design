@@ -6,6 +6,7 @@ import javafx.scene.control.Tab;
 
 
 public class MyChangeListener implements ChangeListener<Tab> {
+
     private static MyChangeListener ourInstance = new MyChangeListener("Python");
     private static String value;
 

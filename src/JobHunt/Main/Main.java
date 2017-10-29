@@ -9,6 +9,8 @@ import JobHunt.resources.SnakeForest;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -25,6 +27,7 @@ public class Main extends Application{
 
         // Create welcome screen and get snake type.
         new WelcomeWindow().getSnakeType();
+
         String snakeType = MyChangeListener.getValue();
 
         // Oh! Catch a snake from snake forest
@@ -45,7 +48,6 @@ public class Main extends Application{
         // Create game.
         Game game = new Game(gameWindow,R.GAME_START_SPEED,snake);
         game.start();
-
 
         // Start Game.
         primaryStage.setScene(gameWindow.getScene());

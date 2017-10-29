@@ -6,9 +6,9 @@ import javafx.scene.paint.Color;
 
 public abstract class AbstractFood {
 
-    private Color foodColor = Color.ROSYBROWN;
-    private Image foodImage;
-    private Point point;
+    protected Color foodColor = Color.ROSYBROWN;
+    protected Image foodImage;
+    protected Point point;
 
 
     public AbstractFood(Point point) {
@@ -37,5 +37,12 @@ public abstract class AbstractFood {
 
     public void setFoodImage(Image foodImage) {
         this.foodImage = foodImage;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractFood{" +
+                "point=" + point +
+                '}';
     }
 }
